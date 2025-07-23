@@ -1,51 +1,46 @@
-const feedGroups = {
+const newsContainer = document.getElementById('news-container');
+
+const feeds = {
   all: [
-    { name: "The Hindu", url: "https://www.thehindu.com/feeder/default.rss" },
-    { name: "Indian Express", url: "https://indianexpress.com/section/india/feed/" },
-    { name: "BBC", url: "http://feeds.bbci.co.uk/news/world/rss.xml" },
-    { name: "Al Jazeera", url: "https://www.aljazeera.com/xml/rss/all.xml" }
+    { name: "The Hindu", url: 'https://www.thehindu.com/feeder/default.rss' },
+    { name: "Indian Express", url: 'https://indianexpress.com/section/india/feed/' },
+    { name: "BBC World", url: 'http://feeds.bbci.co.uk/news/world/rss.xml' },
+    { name: "Al Jazeera", url: 'https://www.aljazeera.com/xml/rss/all.xml' }
   ],
   india: [
-    { name: "NDTV", url: "https://feeds.feedburner.com/ndtvnews-top-stories" },
-    { name: "India Today", url: "https://www.indiatoday.in/rss/home" }
+    { name: "The Hindu", url: 'https://www.thehindu.com/feeder/default.rss' },
+    { name: "Indian Express", url: 'https://indianexpress.com/section/india/feed/' }
   ],
-  "india-finance": [
-    { name: "Financial Express", url: "https://www.financialexpress.com/feed/" },
-    { name: "Moneycontrol", url: "https://www.moneycontrol.com/rss/latestnews.xml" }
+  indiaFinance: [
+    { name: "LiveMint", url: 'https://www.livemint.com/rss/market' },
+    { name: "Business Standard", url: 'https://www.business-standard.com/rss/finance/rss.xml' }
   ],
   world: [
-    { name: "Reuters World", url: "http://feeds.reuters.com/Reuters/worldNews" },
-    { name: "The Guardian", url: "https://www.theguardian.com/world/rss" }
+    { name: "BBC World", url: 'http://feeds.bbci.co.uk/news/world/rss.xml' },
+    { name: "Al Jazeera", url: 'https://www.aljazeera.com/xml/rss/all.xml' }
   ],
-  "world-finance": [
-    { name: "Reuters Business", url: "http://feeds.reuters.com/reuters/businessNews" },
-    { name: "Yahoo Finance", url: "https://finance.yahoo.com/news/rssindex" }
+  globalFinance: [
+    { name: "Reuters", url: 'http://feeds.reuters.com/news/wealth' },
+    { name: "CNBC", url: 'https://www.cnbc.com/id/100003114/device/rss/rss.html' }
   ]
 };
 
-function showTab(tabName) {
-  document.querySelectorAll(".news-section").forEach(section => section.style.display = "none");
-  const selected = document.getElementById(`news-container-${tabName}`);
-  if (selected) selected.style.display = "block";
-}
-
-async function fetchRSS(feed, containerId) {
+async function fetchRSS(feed) {
   const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
   try {
     const res = await fetch(apiUrl);
     const data = await res.json();
 
     if (data.items && data.items.length) {
-      const container = document.getElementById(containerId);
       data.items.slice(0, 5).forEach(article => {
-        const card = document.createElement("div");
-        card.className = "news-card";
+        const card = document.createElement('div');
+        card.className = 'news-card';
         card.innerHTML = `
           <h3>${article.title}</h3>
           <p><strong>${feed.name}</strong></p>
           <a href="${article.link}" target="_blank">Read More</a>
         `;
-        container.appendChild(card);
+        newsContainer.appendChild(card);
       });
     }
   } catch (error) {
@@ -53,13 +48,13 @@ async function fetchRSS(feed, containerId) {
   }
 }
 
-async function fetchAllNews() {
-  for (const category in feedGroups) {
-    const containerId = `news-container-${category}`;
-    for (const feed of feedGroups[category]) {
-      await fetchRSS(feed, containerId);
-    }
+async function showTab(tab) {
+  newsContainer.innerHTML = '';
+  const selectedFeeds = feeds[tab];
+  for (const feed of selectedFeeds) {
+    await fetchRSS(feed);
   }
 }
 
-fetchAllNews();
+// Load all news by default
+showTab('all');
