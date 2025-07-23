@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="A minimalist news reader with Indian and global headlines, free from ads and clickbait." />
+  <meta name="google-site-verification" content="ZZRYDc-0WtEtZg5kUKDfL76LRtQW9zeKAOfJuzLFkvs" />
   <title>Clean News</title>
   <link rel="stylesheet" href="style.css" />
 
@@ -16,26 +17,23 @@
     gtag('config', 'G-LXF2WYCD1X');
   </script>
 </head>
-<body>
 
+<body>
   <header>
     <h1>📰 Clean News</h1>
   </header>
 
-  <section id="tabs">
+  <!-- Tabs -->
+  <div id="tabs">
     <button onclick="showTab('all')">All News</button>
     <button onclick="showTab('india')">India</button>
-    <button onclick="showTab('india-finance')">India Finance</button>
+    <button onclick="showTab('indiaFinance')">India Finance</button>
     <button onclick="showTab('world')">World</button>
-    <button onclick="showTab('world-finance')">Global Finance</button>
-  </section>
+    <button onclick="showTab('globalFinance')">Global Finance</button>
+  </div>
 
-  <!-- News containers -->
-  <main id="news-container-all" class="news-section"></main>
-  <main id="news-container-india" class="news-section" style="display:none;"></main>
-  <main id="news-container-india-finance" class="news-section" style="display:none;"></main>
-  <main id="news-container-world" class="news-section" style="display:none;"></main>
-  <main id="news-container-world-finance" class="news-section" style="display:none;"></main>
+  <!-- News gets loaded here -->
+  <div id="news-container" class="news-container"></div>
 
   <script src="script.js"></script>
 </body>
