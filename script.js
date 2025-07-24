@@ -5,22 +5,25 @@ const feeds = {
     { name: "The Hindu", url: 'https://www.thehindu.com/feeder/default.rss' },
     { name: "Indian Express", url: 'https://indianexpress.com/section/india/feed/' },
     { name: "BBC World", url: 'http://feeds.bbci.co.uk/news/world/rss.xml' },
-    { name: "Al Jazeera", url: 'https://www.aljazeera.com/xml/rss/all.xml' }
+    { name: "Al Jazeera", url: 'https://www.aljazeera.com/xml/rss/all.xml' },
+    { name: "Economic Times", url: 'https://economictimes.indiatimes.com/rssfeeds/1052732854.cms' },
+    { name: "Moneycontrol", url: 'https://www.moneycontrol.com/rss/MCtopnews.xml' },
+    { name: "Yahoo Finance", url: 'https://finance.yahoo.com/news/rssindex' }
   ],
   india: [
     { name: "The Hindu", url: 'https://www.thehindu.com/feeder/default.rss' },
     { name: "Indian Express", url: 'https://indianexpress.com/section/india/feed/' }
   ],
   indiaFinance: [
-    { name: "LiveMint", url: 'https://www.livemint.com/rss/market' },
-    { name: "Business Standard", url: 'https://www.business-standard.com/rss/finance/rss.xml' }
+    { name: "Moneycontrol", url: 'https://www.moneycontrol.com/rss/MCtopnews.xml' },
+    { name: "Economic Times", url: 'https://economictimes.indiatimes.com/rssfeeds/1052732854.cms' }
   ],
   world: [
     { name: "BBC World", url: 'http://feeds.bbci.co.uk/news/world/rss.xml' },
     { name: "Al Jazeera", url: 'https://www.aljazeera.com/xml/rss/all.xml' }
   ],
   globalFinance: [
-    { name: "Reuters", url: 'http://feeds.reuters.com/news/wealth' },
+    { name: "Yahoo Finance", url: 'https://finance.yahoo.com/news/rssindex' },
     { name: "CNBC", url: 'https://www.cnbc.com/id/100003114/device/rss/rss.html' }
   ]
 };
