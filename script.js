@@ -36,19 +36,24 @@ async function fetchRSS(feed) {
         const card = document.createElement('div');
         card.className = 'news-card';
 
-        const publishedDate = new Date(article.pubDate);
-        const formattedDate = publishedDate.toLocaleString('en-IN', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true
-        });
+        // Try different fields for the publish date
+        const rawDate = article.pubDate || article.published || article.isoDate;
+        const publishedDate = rawDate ? new Date(rawDate) : null;
+
+        const formattedDate = publishedDate
+          ? publishedDate.toLocaleString('en-IN', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true
+            })
+          : 'Date unavailable';
 
         card.innerHTML = `
           <h3>${article.title}</h3>
-          <p><strong>${feed.name}</strong> • <em>${formattedDate}</em></p>
+          <p><strong>${feed.name}</strong> <em>${formattedDate}</em></p>
           <a href="${article.link}" target="_blank">Read More</a>
         `;
         newsContainer.appendChild(card);
