@@ -35,6 +35,17 @@ async function fetchRSS(feed) {
       data.items.slice(0, 5).forEach(article => {
         const card = document.createElement('div');
         card.className = 'news-card';
+        
+        const publishedDate = new Date(article.pubDate);
+        const formattedDate = publishedDate.toLocaleString('en-IN', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        });
+        
         card.innerHTML = `
           <h3>${article.title}</h3>
           <p><strong>${feed.name}</strong></p>
