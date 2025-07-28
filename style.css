@@ -49,3 +49,10 @@ header {
   font-size: 1.1em;
   margin-bottom: 0.5em;
 }
+
+.summary {
+  font-size: 0.9em;
+  line-height: 1.4;
+  margin: 10px 0;
+  color: #444;
+}
