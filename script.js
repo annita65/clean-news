@@ -54,11 +54,17 @@ async function fetchRSS(feed) {
             })
           : 'Date unavailable';
 
-        card.innerHTML = `
-          <h3>${article.title}</h3>
-          <p><strong>${feed.name}</strong> <em>${formattedDate}</em></p>
-          <a href="${article.link}" target="_blank">Read More</a>
-        `;
+        // Clean and truncate the description
+let summary = article.description || '';
+summary = summary.replace(/<[^>]*>/g, ''); // remove HTML tags
+summary = summary.length > 500 ? summary.slice(0, 500) + '...' : summary;
+
+card.innerHTML = `
+  <h3>${article.title}</h3>
+  <p><strong>${feed.name}</strong> • ${new Date(article.pubDate).toLocaleString()}</p>
+  <p class="summary">${summary}</p>
+  <a href="${article.link}" target="_blank">Read More</a>
+`;
         newsContainer.appendChild(card);
       });
     }
