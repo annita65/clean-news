@@ -38,10 +38,20 @@ async function fetchRSS(feed) {
         card.className = 'news-card';
 
         // Handle description or content fallback
-        let summary = article.description || article.content || '';
-        summary = summary.replace(/<[^>]*>/g, '').trim(); // Remove HTML tags
-        if (!summary) summary = 'No summary available.';
-        summary = summary.length > 500 ? summary.slice(0, 500) + '...' : summary;
+        let summary = '';
+
+if (article.description) {
+  summary = article.description;
+} else if (article.content) {
+  summary = article.content;
+} else if (article['content:encoded']) {
+  summary = article['content:encoded'];
+} else {
+  summary = 'No summary available.';
+}
+
+summary = summary.replace(/<[^>]*>/g, '').trim();
+summary = summary.length > 500 ? summary.slice(0, 500) + '...' : summary;
 
         card.innerHTML = `
           <h3>${article.title}</h3>
