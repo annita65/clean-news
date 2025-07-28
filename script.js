@@ -6,8 +6,6 @@ const feeds = {
     { name: "Indian Express", url: 'https://indianexpress.com/section/india/feed/' },
     { name: "BBC World", url: 'http://feeds.bbci.co.uk/news/world/rss.xml' },
     { name: "Al Jazeera", url: 'https://www.aljazeera.com/xml/rss/all.xml' },
-    { name: "Economic Times", url: 'https://economictimes.indiatimes.com/rssfeeds/1052732854.cms' },
-    { name: "Moneycontrol", url: 'https://www.moneycontrol.com/rss/MCtopnews.xml' },
     { name: "Yahoo Finance", url: 'https://finance.yahoo.com/news/rssindex' }
   ],
   india: [
@@ -15,16 +13,16 @@ const feeds = {
     { name: "Indian Express", url: 'https://indianexpress.com/section/india/feed/' }
   ],
   indiaFinance: [
-    { name: "Moneycontrol", url: 'https://www.moneycontrol.com/rss/MCtopnews.xml' },
-    { name: "Economic Times", url: 'https://economictimes.indiatimes.com/rssfeeds/1052732854.cms' }
+    { name: "LiveMint", url: 'https://www.livemint.com/rss/market' },
+    { name: "Business Standard", url: 'https://www.business-standard.com/rss/finance/rss.xml' }
   ],
   world: [
     { name: "BBC World", url: 'http://feeds.bbci.co.uk/news/world/rss.xml' },
     { name: "Al Jazeera", url: 'https://www.aljazeera.com/xml/rss/all.xml' }
   ],
   globalFinance: [
-    { name: "Yahoo Finance", url: 'https://finance.yahoo.com/news/rssindex' },
-    { name: "CNBC", url: 'https://www.cnbc.com/id/100003114/device/rss/rss.html' }
+    { name: "Reuters", url: 'http://feeds.reuters.com/news/wealth' },
+    { name: "Yahoo Finance", url: 'https://finance.yahoo.com/news/rssindex' }
   ]
 };
 
@@ -39,32 +37,19 @@ async function fetchRSS(feed) {
         const card = document.createElement('div');
         card.className = 'news-card';
 
-        // Try different fields for the publish date
-        const rawDate = article.pubDate || article.published || article.isoDate;
-        const publishedDate = rawDate ? new Date(rawDate) : null;
+        // Handle description or content fallback
+        let summary = article.description || article.content || '';
+        summary = summary.replace(/<[^>]*>/g, '').trim(); // Remove HTML tags
+        if (!summary) summary = 'No summary available.';
+        summary = summary.length > 500 ? summary.slice(0, 500) + '...' : summary;
 
-        const formattedDate = publishedDate
-          ? publishedDate.toLocaleString('en-IN', {
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true
-            })
-          : 'Date unavailable';
+        card.innerHTML = `
+          <h3>${article.title}</h3>
+          <p><strong>${feed.name}</strong> • ${new Date(article.pubDate).toLocaleString()}</p>
+          <p class="summary">${summary}</p>
+          <a href="${article.link}" target="_blank">Read More</a>
+        `;
 
-        // Clean and truncate the description
-let summary = article.description || '';
-summary = summary.replace(/<[^>]*>/g, ''); // remove HTML tags
-summary = summary.length > 500 ? summary.slice(0, 500) + '...' : summary;
-
-card.innerHTML = `
-  <h3>${article.title}</h3>
-  <p><strong>${feed.name}</strong> • ${new Date(article.pubDate).toLocaleString()}</p>
-  <p class="summary">${summary}</p>
-  <a href="${article.link}" target="_blank">Read More</a>
-`;
         newsContainer.appendChild(card);
       });
     }
