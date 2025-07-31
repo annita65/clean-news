@@ -56,3 +56,16 @@ header {
   margin: 10px 0;
   color: #444;
 }
+.card-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.card-buttons button {
+  background-color: #0059ff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
