@@ -54,12 +54,14 @@ summary = summary.replace(/<[^>]*>/g, '').trim();
 summary = summary.length > 500 ? summary.slice(0, 500) + '...' : summary;
 
         card.innerHTML = `
-          <h3>${article.title}</h3>
-          <p><strong>${feed.name}</strong> • ${new Date(article.pubDate).toLocaleString()}</p>
-          <p class="summary">${summary}</p>
-          <a href="${article.link}" target="_blank">Read More</a>
-        `;
-
+  <h3>${article.title}</h3>
+  <p><strong>${feed.name}</strong> • ${new Date(article.pubDate).toLocaleString()}</p>
+  <p class="summary">${summary}</p>
+  <div class="card-buttons">
+    <a href="${article.link}" target="_blank">Read More</a>
+    <button onclick="readAloud('${encodeURIComponent(article.link)}')">🔊 Read Aloud</button>
+  </div>
+`;
         newsContainer.appendChild(card);
       });
     }
@@ -78,3 +80,26 @@ async function showTab(tab) {
 
 // Load all news by default
 showTab('all');
+async function readAloud(articleUrlEncoded) {
+  const articleUrl = decodeURIComponent(articleUrlEncoded);
+  const proxyUrl = `https://mercury-parser-api.vercel.app/parser?url=${articleUrl}`;
+
+  try {
+    const res = await fetch(proxyUrl);
+    const data = await res.json();
+
+    if (!data.content) {
+      alert('Unable to fetch readable content.');
+      return;
+    }
+
+    const text = data.content.replace(/<[^>]+>/g, '').trim(); // Remove HTML tags
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1; // Optional: Adjust reading speed
+    speechSynthesis.speak(utterance);
+  } catch (error) {
+    console.error('Read Aloud Error:', error);
+    alert('Failed to read article aloud.');
+  }
+}
